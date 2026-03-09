@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-blue: #1E3A8A;
+  --color-purple: #6B3FA0;
+  --color-green: #3FA34D;
+  --color-black: #1A1A1A;
+  --color-gold: #F2B705;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-black);
+    color: #f9fafb;
+    font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer utilities {
+  .text-gradient-brand {
+    background: linear-gradient(135deg, #F2B705 0%, #6B3FA0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .border-gradient-brand {
+    border-image: linear-gradient(135deg, #1E3A8A, #6B3FA0) 1;
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+  }
+}

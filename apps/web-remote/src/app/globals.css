@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-blue: #1E3A8A;
+  --color-purple: #6B3FA0;
+  --color-green: #3FA34D;
+  --color-black: #1A1A1A;
+  --color-gold: #F2B705;
+}
+
+@layer base {
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    background-color: var(--color-black);
+    color: #f9fafb;
+    font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  }
+}
+
+@layer utilities {
+  .touch-btn {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+  }
+}
