@@ -1,0 +1,21 @@
+# Build outputs
+dist
+build
+.next
+out
+
+# Dependencies
+node_modules
+
+# Turbo cache
+.turbo
+
+# Test coverage
+coverage
+*.lcov
+
+# Generated type declarations (managed by build step)
+**/*.d.ts.map
+
+# Misc
+*.log

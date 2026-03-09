@@ -1,0 +1,32 @@
+# CODEOWNERS – CogniCore™ Monorepo
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Each line is a file pattern followed by one or more owners.
+# Owners are automatically requested for review on PRs that touch matching files.
+
+# ── Global Fallback ───────────────────────────────────────────────────────────
+# All unmatched files default to the core platform team.
+*                               @AT-Medical-GmbH/platform-core
+
+# ── Root Configuration ────────────────────────────────────────────────────────
+/package.json                   @AT-Medical-GmbH/platform-core
+/turbo.json                     @AT-Medical-GmbH/platform-core
+/tsconfig.base.json             @AT-Medical-GmbH/platform-core
+/.eslintrc.js                   @AT-Medical-GmbH/platform-core
+/.prettierrc                    @AT-Medical-GmbH/platform-core
+/pnpm-workspace.yaml            @AT-Medical-GmbH/platform-core
+
+# ── Frontend Apps ─────────────────────────────────────────────────────────────
+/apps/                          @AT-Medical-GmbH/frontend
+
+# ── Backend Services ──────────────────────────────────────────────────────────
+/services/                      @AT-Medical-GmbH/backend
+
+# ── Shared Packages ───────────────────────────────────────────────────────────
+/packages/                      @AT-Medical-GmbH/platform-core
+
+# ── CI / CD ───────────────────────────────────────────────────────────────────
+/.github/                       @AT-Medical-GmbH/devops
+
+# ── Security & Compliance ─────────────────────────────────────────────────────
+/SECURITY.md                    @AT-Medical-GmbH/security

@@ -1,0 +1,7 @@
+packages:
+  # Frontend applications (Next.js, etc.)
+  - "apps/*"
+  # Backend microservices (NestJS, etc.)
+  - "services/*"
+  # Shared libraries and internal packages
+  - "packages/*"

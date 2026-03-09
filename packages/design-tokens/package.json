@@ -1,0 +1,24 @@
+{
+  "name": "@cognicore/design-tokens",
+  "version": "0.1.0",
+  "description": "CogniCore™ design tokens – colors, typography, spacing, and Tailwind preset",
+  "license": "MIT",
+  "author": "AT Medical GmbH <dev@atmedical.de>",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tailwind-preset": "./src/tailwind-preset.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  },
+  "peerDependencies": {
+    "tailwindcss": ">=3.4.0"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
+  }
+}

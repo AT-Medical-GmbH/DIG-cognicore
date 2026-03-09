@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // DATABASE_URL is read from the environment; set it in .env or via secrets manager.
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Session — top-level entity representing a single presentation event.
+// ---------------------------------------------------------------------------
+model Session {
+  id          String   @id @default(uuid())
+  sessionCode String   @unique @map("session_code") @db.VarChar(6)
+  title       String   @db.VarChar(120)
+  status      String   @default("PENDING") // PENDING | ACTIVE | PAUSED | ENDED
+  settings    Json     @default("{}")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  participants    Participant[]
+  polls           Poll[]
+  audienceSignals AudienceSignal[]
+  captionSegments CaptionSegment[]
+  recordings      Recording[]
+
+  @@map("sessions")
+}
+
+// ---------------------------------------------------------------------------
+// Participant — an attendee or presenter within a session.
+// ---------------------------------------------------------------------------
+model Participant {
+  id          String   @id @default(uuid())
+  sessionId   String   @map("session_id")
+  role        String   @default("AUDIENCE") // HOST | PRESENTER | AUDIENCE
+  displayName String   @map("display_name") @db.VarChar(80)
+  joinedAt    DateTime @default(now()) @map("joined_at")
+
+  session       Session        @relation(fields: [sessionId], references: [id])
+  pollResponses PollResponse[]
+  signals       AudienceSignal[]
+
+  @@map("participants")
+}
+
+// ---------------------------------------------------------------------------
+// Poll — a live audience poll attached to a session.
+// ---------------------------------------------------------------------------
+model Poll {
+  id        String   @id @default(uuid())
+  sessionId String   @map("session_id")
+  type      String   // MULTIPLE_CHOICE | WORD_CLOUD | RATING | OPEN_ENDED
+  status    String   @default("DRAFT") // DRAFT | ACTIVE | CLOSED
+  question  String   @db.VarChar(500)
+  options   Json     @default("[]")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  session   Session        @relation(fields: [sessionId], references: [id])
+  responses PollResponse[]
+
+  @@map("polls")
+}
+
+// ---------------------------------------------------------------------------
+// PollResponse — a single participant's answer to a poll.
+// ---------------------------------------------------------------------------
+model PollResponse {
+  id            String   @id @default(uuid())
+  pollId        String   @map("poll_id")
+  participantId String   @map("participant_id")
+  value         String   @db.VarChar(500)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  poll        Poll        @relation(fields: [pollId], references: [id])
+  participant Participant @relation(fields: [participantId], references: [id])
+
+  @@map("poll_responses")
+}
+
+// ---------------------------------------------------------------------------
+// AudienceSignal — a real-time signal from a participant (raise hand, reaction).
+// ---------------------------------------------------------------------------
+model AudienceSignal {
+  id            String   @id @default(uuid())
+  sessionId     String   @map("session_id")
+  participantId String   @map("participant_id")
+  type          String   // RAISE_HAND | THUMBS_UP | THUMBS_DOWN | CONFUSED | SPEED_UP | SLOW_DOWN | CUSTOM
+  message       String?  @db.VarChar(280)
+  timestamp     DateTime @default(now())
+  visible       Boolean  @default(true)
+
+  session     Session     @relation(fields: [sessionId], references: [id])
+  participant Participant @relation(fields: [participantId], references: [id])
+
+  @@map("audience_signals")
+}
+
+// ---------------------------------------------------------------------------
+// CaptionSegment — a speech-to-text segment produced by the speech-gateway.
+// ---------------------------------------------------------------------------
+model CaptionSegment {
+  id        String   @id @default(uuid())
+  sessionId String   @map("session_id")
+  text      String   @db.VarChar(2000)
+  language  String   @db.VarChar(10)
+  startTime Float    @map("start_time") // seconds from session start
+  endTime   Float    @map("end_time")
+  isFinal   Boolean  @default(true) @map("is_final")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@map("caption_segments")
+}
+
+// ---------------------------------------------------------------------------
+// Recording — a recording job linked to a session.
+// ---------------------------------------------------------------------------
+model Recording {
+  id        String    @id @default(uuid())
+  sessionId String    @map("session_id")
+  status    String    @default("PENDING") // PENDING | RECORDING | PROCESSING | READY | FAILED
+  filePath  String?   @map("file_path")
+  startedAt DateTime? @map("started_at")
+  endedAt   DateTime? @map("ended_at")
+
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@map("recordings")
+}
