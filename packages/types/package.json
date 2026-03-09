@@ -1,0 +1,15 @@
+{
+  "name": "@cognicore/types",
+  "version": "0.1.0",
+  "description": "CogniCore™ shared TypeScript type definitions",
+  "license": "MIT",
+  "author": "AT Medical GmbH <dev@atmedical.de>",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
