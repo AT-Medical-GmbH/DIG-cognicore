@@ -4,6 +4,13 @@
 
 > A product by AT Medical GmbH®
 
+[![CI](https://github.com/AT-Medical/DIG-cognicore/actions/workflows/ci.yml/badge.svg)](https://github.com/AT-Medical/DIG-cognicore/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/AT-Medical/DIG-cognicore/actions/workflows/codeql.yml/badge.svg)](https://github.com/AT-Medical/DIG-cognicore/actions/workflows/codeql.yml)
+[![Corporate Identity](https://github.com/AT-Medical/DIG-cognicore/actions/workflows/corporate-identity.yml/badge.svg)](https://github.com/AT-Medical/DIG-cognicore/actions/workflows/corporate-identity.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Enterprise Standard](https://img.shields.io/badge/AT%20Medical-Enterprise%20Standard%20v1-blue)](./docs/governance/ABSCHLUSSBERICHT.md)
+[![Changelog](https://img.shields.io/badge/changelog-keep%20a%20changelog-orange)](./CHANGELOG.md)
+
 CogniCore™ is a modular, web-based platform for interactive, integrative, and inclusive learning and communication environments. Designed for schools, universities, medical education, conferences, hybrid events, and live presentations with real-time interaction.
 
 ---

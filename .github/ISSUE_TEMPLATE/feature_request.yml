@@ -1,0 +1,86 @@
+---
+name: Feature Request
+description: Propose a new feature or enhancement for CogniCore™
+title: "[FEATURE] "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Request – CogniCore™
+        > A product by AT Medical GmbH®
+
+        Use this form to propose new features or enhancements. Be as specific as possible to help us evaluate and prioritise your request.
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Target Module
+      description: Which CogniCore™ module would this feature belong to?
+      options:
+        - CogniCompanion™ (viewer / remote)
+        - CogniCoordinator™ (admin / teacher)
+        - CogniConnect™ (polls / Q&A / signals)
+        - CogniCaption™ (captions / translation)
+        - CogniCoach™ (session coaching tools)
+        - CogniCapture™ (recording)
+        - CogniControl™ (auth / session management)
+        - Infrastructure / CI / Deployment
+        - New Module / Cross-cutting
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What is the current limitation?
+      placeholder: "As a [type of user], I am unable to [do X] because [reason]."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the feature or enhancement you would like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low — Nice to have
+        - Medium — Would significantly improve workflow
+        - High — Blocking or critical for use case
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Any other context, mockups, references, or links that may help.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and discussions for duplicates
+          required: true
+        - label: I understand this is a request and not a guarantee of implementation
+          required: true
