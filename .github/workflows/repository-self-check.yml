@@ -1,0 +1,156 @@
+# ============================================================
+# AT Medical – Repository Self-Check Workflow
+# Repository: DIG-cognicore
+# ============================================================
+#
+# Performs a comprehensive self-assessment of the repository
+# to ensure it meets AT Medical enterprise standards.
+# Produces a report as a workflow summary.
+
+name: Repository Self-Check
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # Run weekly on Sundays at 07:00 UTC
+    - cron: '0 7 * * 0'
+  workflow_dispatch:
+
+jobs:
+  self-check:
+    name: Repository Self-Assessment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check governance files
+        id: governance
+        shell: bash
+        run: |
+          REQUIRED=(
+            "README.md"
+            "LICENSE"
+            "SECURITY.md"
+            "CONTRIBUTING.md"
+            "CODE_OF_CONDUCT.md"
+            "CHANGELOG.md"
+            ".github/CODEOWNERS"
+            "metadata/repository-profile.yml"
+            "configs/automation/copilot/repository-purpose.yml"
+          )
+
+          PASS=0
+          FAIL=0
+          REPORT=""
+
+          for f in "${REQUIRED[@]}"; do
+            if [ -f "$f" ]; then
+              REPORT+="| \`$f\` | ✅ Present |\n"
+              PASS=$((PASS+1))
+            else
+              REPORT+="| \`$f\` | ❌ Missing |\n"
+              FAIL=$((FAIL+1))
+            fi
+          done
+
+          echo "pass=$PASS" >> $GITHUB_OUTPUT
+          echo "fail=$FAIL" >> $GITHUB_OUTPUT
+          echo -e "$REPORT" > /tmp/governance_report.txt
+
+      - name: Check enterprise directories
+        id: directories
+        shell: bash
+        run: |
+          REQUIRED_DIRS=(
+            "configs"
+            "metadata"
+            "artifacts"
+            "templates"
+            "scripts"
+            "tests"
+          )
+
+          DIR_REPORT=""
+          for d in "${REQUIRED_DIRS[@]}"; do
+            if [ -d "$d" ]; then
+              DIR_REPORT+="| \`$d/\` | ✅ Present |\n"
+            else
+              DIR_REPORT+="| \`$d/\` | ❌ Missing |\n"
+            fi
+          done
+
+          echo -e "$DIR_REPORT" > /tmp/dir_report.txt
+
+      - name: Check CI workflows
+        id: workflows
+        shell: bash
+        run: |
+          WORKFLOWS=(
+            ".github/workflows/ci-validation.yml"
+            ".github/workflows/governance-check.yml"
+            ".github/workflows/tagging-validation.yml"
+            ".github/workflows/dependency-check.yml"
+            ".github/workflows/repository-self-check.yml"
+            ".github/workflows/safe-cleanup.yml"
+          )
+
+          WF_REPORT=""
+          for w in "${WORKFLOWS[@]}"; do
+            if [ -f "$w" ]; then
+              WF_REPORT+="| \`$w\` | ✅ Present |\n"
+            else
+              WF_REPORT+="| \`$w\` | ❌ Missing |\n"
+            fi
+          done
+
+          echo -e "$WF_REPORT" > /tmp/wf_report.txt
+
+      - name: Generate summary report
+        shell: bash
+        run: |
+          echo "# 🏥 AT Medical – Repository Self-Check Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Repository:** AT-Medical/DIG-cognicore" >> $GITHUB_STEP_SUMMARY
+          echo "**Date:** $(date -u '+%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## Governance Files" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          cat /tmp/governance_report.txt >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## Enterprise Directory Structure" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Directory | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+          cat /tmp/dir_report.txt >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## CI/CD Workflows" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Workflow | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+          cat /tmp/wf_report.txt >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          PASS="${{ steps.governance.outputs.pass }}"
+          FAIL="${{ steps.governance.outputs.fail }}"
+
+          if [ "$FAIL" -gt 0 ]; then
+            echo "## ❌ Result: FAIL" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "$FAIL governance file(s) are missing. Please address the issues above." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "## ✅ Result: PASS" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "All $PASS required governance files are present. Repository meets AT Medical enterprise standards." >> $GITHUB_STEP_SUMMARY
+          fi

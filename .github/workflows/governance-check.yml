@@ -1,0 +1,136 @@
+# ============================================================
+# AT Medical – Governance Check Workflow
+# Repository: DIG-cognicore
+# ============================================================
+#
+# Validates that required enterprise governance files are
+# present, well-formed, and up-to-date.
+
+name: Governance Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    # Run weekly on Mondays at 08:00 UTC
+    - cron: '0 8 * * 1'
+  workflow_dispatch:
+
+jobs:
+  required-files:
+    name: Required Files Present
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required governance files
+        shell: bash
+        run: |
+          REQUIRED_FILES=(
+            "README.md"
+            "LICENSE"
+            "SECURITY.md"
+            "CONTRIBUTING.md"
+            "CODE_OF_CONDUCT.md"
+            "CHANGELOG.md"
+            ".github/CODEOWNERS"
+            "metadata/repository-profile.yml"
+            "configs/automation/copilot/repository-purpose.yml"
+          )
+
+          MISSING=()
+          for f in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$f" ]; then
+              MISSING+=("$f")
+            fi
+          done
+
+          if [ ${#MISSING[@]} -gt 0 ]; then
+            echo "❌ Missing required governance files:"
+            for f in "${MISSING[@]}"; do
+              echo "  - $f"
+            done
+            exit 1
+          fi
+
+          echo "✅ All required governance files are present."
+
+  metadata-valid:
+    name: Metadata YAML Valid
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq \
+            https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+      - name: Validate metadata/repository-profile.yml
+        run: |
+          yq e '.' metadata/repository-profile.yml > /dev/null
+          echo "✅ metadata/repository-profile.yml is valid YAML."
+
+      - name: Validate configs/automation/copilot/repository-purpose.yml
+        run: |
+          yq e '.' configs/automation/copilot/repository-purpose.yml > /dev/null
+          echo "✅ configs/automation/copilot/repository-purpose.yml is valid YAML."
+
+  codeowners-valid:
+    name: CODEOWNERS Valid
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check CODEOWNERS location
+        run: |
+          if [ -f ".github/CODEOWNERS" ]; then
+            echo "✅ CODEOWNERS found at .github/CODEOWNERS"
+          else
+            echo "❌ CODEOWNERS must be located at .github/CODEOWNERS"
+            exit 1
+          fi
+
+  enterprise-structure:
+    name: Enterprise Directory Structure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check required directories
+        shell: bash
+        run: |
+          REQUIRED_DIRS=(
+            "configs"
+            "metadata"
+            "artifacts"
+            "templates"
+            "scripts"
+            "tests"
+          )
+
+          MISSING=()
+          for d in "${REQUIRED_DIRS[@]}"; do
+            if [ ! -d "$d" ]; then
+              MISSING+=("$d")
+            fi
+          done
+
+          if [ ${#MISSING[@]} -gt 0 ]; then
+            echo "❌ Missing required enterprise directories:"
+            for d in "${MISSING[@]}"; do
+              echo "  - $d/"
+            done
+            exit 1
+          fi
+
+          echo "✅ All required enterprise directories are present."
