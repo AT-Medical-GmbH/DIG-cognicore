@@ -1,0 +1,201 @@
+# Dependabot Configuration – CogniCore™
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+
+updates:
+  # ── Root workspace (pnpm) ──────────────────────────────────
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 10
+    reviewers:
+      - AT-Medical-GmbH/platform-core
+    assignees:
+      - AT-Medical-GmbH/devops
+    labels:
+      - dependencies
+      - automated
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      typescript-eslint:
+        patterns:
+          - "@typescript-eslint/*"
+      next-js:
+        patterns:
+          - "next"
+          - "eslint-config-next"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react*"
+      testing:
+        patterns:
+          - "jest*"
+          - "@jest/*"
+          - "vitest*"
+          - "@testing-library/*"
+
+  # ── apps/web-admin ────────────────────────────────────────
+  - package-ecosystem: npm
+    directory: "/apps/web-admin"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - automated
+      - web-admin
+    commit-message:
+      prefix: "chore(deps/web-admin)"
+
+  # ── apps/web-teacher ─────────────────────────────────────
+  - package-ecosystem: npm
+    directory: "/apps/web-teacher"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - automated
+      - web-teacher
+    commit-message:
+      prefix: "chore(deps/web-teacher)"
+
+  # ── apps/web-viewer ──────────────────────────────────────
+  - package-ecosystem: npm
+    directory: "/apps/web-viewer"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - automated
+      - web-viewer
+    commit-message:
+      prefix: "chore(deps/web-viewer)"
+
+  # ── apps/web-remote ──────────────────────────────────────
+  - package-ecosystem: npm
+    directory: "/apps/web-remote"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - automated
+      - web-remote
+    commit-message:
+      prefix: "chore(deps/web-remote)"
+
+  # ── apps/web-landing ─────────────────────────────────────
+  - package-ecosystem: npm
+    directory: "/apps/web-landing"
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+      - automated
+    commit-message:
+      prefix: "chore(deps/web-landing)"
+
+  # ── services/api-core ────────────────────────────────────
+  - package-ecosystem: npm
+    directory: "/services/api-core"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - automated
+      - api-core
+    commit-message:
+      prefix: "chore(deps/api-core)"
+
+  # ── services/realtime-gateway ────────────────────────────
+  - package-ecosystem: npm
+    directory: "/services/realtime-gateway"
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+      - automated
+    commit-message:
+      prefix: "chore(deps/realtime-gateway)"
+
+  # ── services/speech-gateway ──────────────────────────────
+  - package-ecosystem: npm
+    directory: "/services/speech-gateway"
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+      - automated
+    commit-message:
+      prefix: "chore(deps/speech-gateway)"
+
+  # ── services/translation-gateway ─────────────────────────
+  - package-ecosystem: npm
+    directory: "/services/translation-gateway"
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+      - automated
+    commit-message:
+      prefix: "chore(deps/translation-gateway)"
+
+  # ── services/recording-service ───────────────────────────
+  - package-ecosystem: npm
+    directory: "/services/recording-service"
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - dependencies
+      - automated
+    commit-message:
+      prefix: "chore(deps/recording-service)"
+
+  # ── GitHub Actions ────────────────────────────────────────
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 5
+    reviewers:
+      - AT-Medical-GmbH/devops
+    labels:
+      - dependencies
+      - automated
+      - github-actions
+    commit-message:
+      prefix: "chore(deps/actions)"

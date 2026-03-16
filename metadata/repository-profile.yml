@@ -1,0 +1,96 @@
+# ============================================================
+# AT Medical Enterprise Repository Profile
+# ============================================================
+# This file is the authoritative metadata record for this
+# repository. It is consumed by the AT Medical governance
+# toolchain, corporate directory, and dashboard.
+# ============================================================
+
+schema_version: "1.0"
+
+# ── Identity ─────────────────────────────────────────────────
+repository:
+  name: DIG-cognicore
+  full_name: AT-Medical/DIG-cognicore
+  display_name: "CogniCore™"
+  description: >
+    Enterprise meeting-intelligence platform — real-time captions,
+    translation, live interaction, recording, and LMS integration.
+  product_codename: "CogniCore"
+  internal_prefix: "DIG"
+
+# ── Ownership ─────────────────────────────────────────────────
+ownership:
+  organization: "AT Medical GmbH®"
+  department: "Digital Products"
+  product_owner: "ATMedicalGmbH"
+  engineering_lead: "AT-Medical-GmbH/platform-core"
+  teams:
+    - name: platform-core
+      role: primary-maintainer
+    - name: frontend
+      role: contributor
+    - name: backend
+      role: contributor
+    - name: devops
+      role: ci-cd
+    - name: security
+      role: compliance
+
+# ── Classification ────────────────────────────────────────────
+classification:
+  visibility: private
+  data_sensitivity: internal
+  compliance_level: standard
+  medical_context: true
+  hipaa_relevant: false
+  gdpr_relevant: true
+
+# ── Technology ────────────────────────────────────────────────
+technology:
+  type: monorepo
+  architecture: microservices
+  languages:
+    - TypeScript
+    - JavaScript
+  frameworks:
+    - Next.js
+    - NestJS
+    - React
+  runtime: Node.js
+  package_manager: pnpm
+  build_tool: Turborepo
+  databases:
+    - PostgreSQL
+  infrastructure:
+    - Docker
+    - GitHub Actions
+    - Redis
+
+# ── Lifecycle ─────────────────────────────────────────────────
+lifecycle:
+  status: active               # active | maintenance | deprecated | archived
+  phase: development           # concept | development | production | eol
+  created: "2024-01-01"
+  enterprise_standard_adopted: "2026-03-16"
+  last_review: "2026-03-16"
+  next_review: "2026-09-16"
+
+# ── Versioning & Branching ────────────────────────────────────
+versioning:
+  strategy: semver
+  default_branch: main
+  protected_branches:
+    - main
+    - staging
+  release_tag_pattern: "v[0-9]+.[0-9]+.[0-9]+"
+
+# ── Links ─────────────────────────────────────────────────────
+links:
+  repository: "https://github.com/AT-Medical/DIG-cognicore"
+  issues: "https://github.com/AT-Medical/DIG-cognicore/issues"
+  wiki: "https://github.com/AT-Medical/DIG-cognicore/wiki"
+  changelog: "./CHANGELOG.md"
+  security_policy: "./SECURITY.md"
+  contributing: "./CONTRIBUTING.md"
+  license: "./LICENSE"

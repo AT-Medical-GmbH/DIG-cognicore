@@ -1,0 +1,147 @@
+name: Corporate Identity Validation
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main, staging]
+  schedule:
+    - cron: "0 6 * * 1"  # Weekly Monday 06:00 UTC
+
+jobs:
+  validate-corporate-identity:
+    name: Validate AT Medical Corporate Identity
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check repository-profile.yml exists
+        run: |
+          if [ ! -f "metadata/repository-profile.yml" ]; then
+            echo "::error file=metadata/repository-profile.yml::Corporate identity file metadata/repository-profile.yml is missing."
+            exit 1
+          fi
+          echo "✅ metadata/repository-profile.yml exists"
+
+      - name: Validate repository-profile.yml fields
+        run: |
+          PROFILE="metadata/repository-profile.yml"
+          ERRORS=0
+
+          check_field() {
+            local field="$1"
+            if ! grep -q "$field" "$PROFILE"; then
+              echo "::error file=$PROFILE::Required field '$field' is missing from repository-profile.yml"
+              ERRORS=$((ERRORS + 1))
+            else
+              echo "✅ Field present: $field"
+            fi
+          }
+
+          check_field "organization:"
+          check_field "department:"
+          check_field "product_owner:"
+          check_field "classification:"
+          check_field "lifecycle:"
+          check_field "status:"
+
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "::error::$ERRORS required field(s) missing from repository-profile.yml"
+            exit 1
+          fi
+          echo "✅ All required fields present"
+
+      - name: Check global tag registry exists
+        run: |
+          if [ ! -f "metadata/tags/global-tags.yml" ]; then
+            echo "::error file=metadata/tags/global-tags.yml::Global tag registry is missing."
+            exit 1
+          fi
+          echo "✅ metadata/tags/global-tags.yml exists"
+
+      - name: Validate mandatory corporate tags
+        run: |
+          TAGS="metadata/tags/global-tags.yml"
+          ERRORS=0
+
+          check_tag() {
+            local tag="$1"
+            if ! grep -q "$tag" "$TAGS"; then
+              echo "::error file=$TAGS::Required corporate tag '$tag' is missing"
+              ERRORS=$((ERRORS + 1))
+            else
+              echo "✅ Tag present: $tag"
+            fi
+          }
+
+          check_tag "organization:"
+          check_tag "cost_center:"
+          check_tag "project:"
+          check_tag "product_line:"
+
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "::error::$ERRORS required tag(s) missing"
+            exit 1
+          fi
+          echo "✅ All mandatory corporate tags present"
+
+      - name: Check required root files
+        run: |
+          REQUIRED_FILES=(
+            "README.md"
+            "LICENSE"
+            "SECURITY.md"
+            "CONTRIBUTING.md"
+            "CODE_OF_CONDUCT.md"
+            "CHANGELOG.md"
+            "CODEOWNERS"
+            ".env.example"
+          )
+          ERRORS=0
+          for f in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "::error file=$f::Required file '$f' is missing."
+              ERRORS=$((ERRORS + 1))
+            else
+              echo "✅ $f"
+            fi
+          done
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "::error::$ERRORS required file(s) missing"
+            exit 1
+          fi
+
+      - name: Check AT Medical branding in README
+        run: |
+          if ! grep -qi "AT Medical" README.md; then
+            echo "::error file=README.md::README.md does not mention 'AT Medical' — corporate branding required."
+            exit 1
+          fi
+          echo "✅ AT Medical branding present in README.md"
+
+      - name: Check license is MIT
+        run: |
+          if ! grep -q "MIT License" LICENSE; then
+            echo "::error file=LICENSE::LICENSE file does not contain MIT License text."
+            exit 1
+          fi
+          echo "✅ MIT License confirmed"
+
+      - name: Check AT Medical copyright in LICENSE
+        run: |
+          if ! grep -qi "AT Medical" LICENSE; then
+            echo "::error file=LICENSE::LICENSE does not contain AT Medical copyright."
+            exit 1
+          fi
+          echo "✅ AT Medical copyright in LICENSE"
+
+      - name: Corporate Identity Validation Summary
+        run: |
+          echo ""
+          echo "================================================"
+          echo " AT Medical Corporate Identity — PASSED ✅"
+          echo " Repository: ${{ github.repository }}"
+          echo " Ref:        ${{ github.ref }}"
+          echo " Run:        ${{ github.run_number }}"
+          echo "================================================"

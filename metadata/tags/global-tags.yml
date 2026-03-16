@@ -1,0 +1,79 @@
+# ============================================================
+# CogniCore™ – Global Tag Registry
+# AT Medical Enterprise Tagging Standard v1.0
+# ============================================================
+# This file defines the canonical tag taxonomy for all
+# components, services, and modules in this repository.
+# Tags are used for cost allocation, search, filtering, and
+# governance reporting across the AT Medical toolchain.
+# ============================================================
+
+schema_version: "1.0"
+last_updated: "2026-03-16"
+
+# ── Mandatory Corporate Tags ──────────────────────────────────
+corporate:
+  organization: "AT Medical GmbH"
+  cost_center: "DIGITAL-PRODUCTS"
+  project: "CogniCore"
+  product_line: "DIG"
+  environment_type: "multi"   # dev | staging | production | multi
+
+# ── Product Tags ─────────────────────────────────────────────
+product:
+  name: "CogniCore"
+  version: "0.1.0"
+  codename: "cortex"
+  tier: "enterprise"
+  audience:
+    - medical-education
+    - conferences
+    - hybrid-events
+
+# ── Technical Tags ────────────────────────────────────────────
+technical:
+  architecture: monorepo
+  language: typescript
+  runtime: nodejs
+  framework_frontend: nextjs
+  framework_backend: nestjs
+  database: postgresql
+  realtime: socketio
+
+# ── Module Tags ───────────────────────────────────────────────
+# One entry per named module. Used to tag service deployments.
+modules:
+  - id: cogni-companion
+    display: "CogniCompanion™"
+    apps: [web-viewer, web-remote]
+  - id: cogni-coordinator
+    display: "CogniCoordinator™"
+    apps: [web-admin, web-teacher]
+  - id: cogni-connect
+    display: "CogniConnect™"
+    services: [realtime-gateway]
+  - id: cogni-caption
+    display: "CogniCaption™"
+    services: [speech-gateway, translation-gateway]
+  - id: cogni-capture
+    display: "CogniCapture™"
+    services: [recording-service]
+  - id: cogni-control
+    display: "CogniControl™"
+    packages: [auth]
+
+# ── Compliance Tags ───────────────────────────────────────────
+compliance:
+  gdpr: true
+  hipaa: false
+  data_residency: "EU"
+  encryption_at_rest: required
+  encryption_in_transit: required
+  audit_logging: required
+
+# ── CI/CD Tags ────────────────────────────────────────────────
+cicd:
+  provider: github-actions
+  registry: ghcr.io
+  artifact_store: s3-compatible
+  deployment_model: container
