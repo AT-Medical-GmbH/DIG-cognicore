@@ -1,0 +1,161 @@
+# ============================================================
+# AT Medical – Safe Cleanup Workflow
+# Repository: DIG-cognicore
+# ============================================================
+#
+# Safely removes stale branches, expired caches, and orphaned
+# workflow run artifacts. All destructive operations require
+# explicit opt-in via workflow_dispatch inputs.
+
+name: Safe Cleanup
+
+on:
+  schedule:
+    # Run every Sunday at 03:00 UTC
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      delete_stale_branches:
+        description: 'Delete branches merged more than 30 days ago'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      delete_old_workflow_runs:
+        description: 'Delete workflow run logs older than 90 days'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      dry_run:
+        description: 'Dry run – list what would be deleted without deleting'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  stale-branches:
+    name: Clean Stale Merged Branches
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.delete_stale_branches == 'true' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Identify stale merged branches
+        id: stale
+        shell: bash
+        run: |
+          CUTOFF=$(date -d '30 days ago' +%s)
+          PROTECTED="main develop"
+
+          echo "Scanning for merged branches older than 30 days..."
+          STALE_BRANCHES=()
+
+          git fetch --prune origin
+
+          for branch in $(git branch -r --merged origin/main | grep -v HEAD | sed 's|origin/||'); do
+            # Skip protected branches
+            if echo "$PROTECTED" | grep -qw "$branch"; then
+              continue
+            fi
+
+            LAST_COMMIT_DATE=$(git log -1 --format="%ct" "origin/$branch" 2>/dev/null || echo 0)
+            if [ "$LAST_COMMIT_DATE" -lt "$CUTOFF" ]; then
+              STALE_BRANCHES+=("$branch")
+            fi
+          done
+
+          if [ ${#STALE_BRANCHES[@]} -eq 0 ]; then
+            echo "✅ No stale merged branches found."
+          else
+            echo "Found ${#STALE_BRANCHES[@]} stale branch(es):"
+            for b in "${STALE_BRANCHES[@]}"; do
+              echo "  - $b"
+            done
+
+            DRY_RUN="${{ github.event.inputs.dry_run || 'true' }}"
+            if [ "$DRY_RUN" = "false" ]; then
+              for b in "${STALE_BRANCHES[@]}"; do
+                git push origin --delete "$b"
+                echo "  🗑 Deleted: $b"
+              done
+            else
+              echo "ℹ️  Dry run mode – branches were NOT deleted."
+            fi
+          fi
+
+  old-workflow-runs:
+    name: Clean Old Workflow Run Logs
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.delete_old_workflow_runs == 'true' }}
+    steps:
+      - name: Delete workflow runs older than 90 days
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const dryRun = '${{ github.event.inputs.dry_run || "true" }}' === 'true';
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - 90);
+
+            const { data: { workflow_runs } } = await github.rest.actions.listWorkflowRunsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100,
+              status: 'completed',
+            });
+
+            const stale = workflow_runs.filter(run =>
+              new Date(run.created_at) < cutoffDate
+            );
+
+            core.info(`Found ${stale.length} workflow run(s) older than 90 days.`);
+
+            for (const run of stale) {
+              core.info(`  ${dryRun ? '[DRY RUN] Would delete' : 'Deleting'}: run #${run.id} (${run.name}, ${run.created_at})`);
+              if (!dryRun) {
+                await github.rest.actions.deleteWorkflowRun({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: run.id,
+                });
+              }
+            }
+
+            if (dryRun) {
+              core.info('ℹ️  Dry run mode – workflow runs were NOT deleted.');
+            } else {
+              core.info(`✅ Deleted ${stale.length} old workflow run(s).`);
+            }
+
+  summary:
+    name: Cleanup Summary
+    runs-on: ubuntu-latest
+    needs: [stale-branches, old-workflow-runs]
+    if: always()
+    steps:
+      - name: Write summary
+        shell: bash
+        run: |
+          echo "## 🧹 Safe Cleanup Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Repository | AT-Medical/DIG-cognicore |" >> $GITHUB_STEP_SUMMARY
+          echo "| Triggered by | \`${{ github.event_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Dry Run | \`${{ github.event.inputs.dry_run || 'N/A (scheduled)' }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Timestamp | $(date -u '+%Y-%m-%d %H:%M UTC') |" >> $GITHUB_STEP_SUMMARY
