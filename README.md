@@ -4,6 +4,14 @@
 
 > A product by AT Medical GmbH®
 
+[![Project](https://img.shields.io/badge/type-project-blue?style=flat-square)](metadata/repository-profile.yml)
+[![Visibility](https://img.shields.io/badge/visibility-private-lightgrey?style=flat-square)](metadata/repository-profile.yml)
+[![Status](https://img.shields.io/badge/status-active-brightgreen?style=flat-square)](metadata/repository-profile.yml)
+[![Team](https://img.shields.io/badge/team-admin--team-blueviolet?style=flat-square)](https://github.com/orgs/AT-Medical/teams/admin-team)
+[![Deploy](https://img.shields.io/badge/deploy-VPS%20%7C%20Webspace-orange?style=flat-square)](metadata/repository-profile.yml)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/AT-Medical/DIG-cognicore/ci-validation.yml?label=CI&style=flat-square)](https://github.com/AT-Medical/DIG-cognicore/actions/workflows/ci-validation.yml)
+
 CogniCore™ is a modular, web-based platform for interactive, integrative, and inclusive learning and communication environments. Designed for schools, universities, medical education, conferences, hybrid events, and live presentations with real-time interaction.
 
 ---
@@ -766,6 +774,22 @@ Deployment
 - cloud or self-hosted infrastructure
 
 ---
+
+<!-- ========================================================= -->
+<!-- VERSION / VERIFICATION BLOCK                             -->
+<!-- ========================================================= -->
+
+---
+
+| Field | Value |
+|---|---|
+| **Document** | README.md |
+| **Repository** | AT-Medical / DIG-cognicore |
+| **Type** | Project – Private |
+| **Owner** | @AT-Medical/admin-team |
+| **Version** | 1.0.0 |
+| **Last Updated** | 2026-03-16 |
+| **Standard** | AT Medical Enterprise Standard v1 |
 
 <!-- ========================================================= -->
 <!-- FOOTER                                                    -->

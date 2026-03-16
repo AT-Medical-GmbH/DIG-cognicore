@@ -161,4 +161,16 @@ Instead, refer to [SECURITY.md](./SECURITY.md) for responsible disclosure instru
 
 ---
 
+| Field | Value |
+|---|---|
+| **Document** | CONTRIBUTING.md |
+| **Repository** | AT-Medical / DIG-cognicore |
+| **Type** | Project – Private |
+| **Owner** | @AT-Medical/admin-team |
+| **Version** | 1.0.0 |
+| **Last Updated** | 2026-03-16 |
+| **Standard** | AT Medical Enterprise Standard v1 |
+
+---
+
 _© AT Medical GmbH® – All rights reserved._
