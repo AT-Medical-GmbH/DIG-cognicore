@@ -30,3 +30,13 @@
 
 # ── Security & Compliance ─────────────────────────────────────────────────────
 /SECURITY.md                    @AT-Medical-GmbH/security
+
+# ── Governance / Metadata ─────────────────────────────────────────────────────
+/metadata/                      @AT-Medical-GmbH/admin-team
+/configs/                       @AT-Medical-GmbH/devops
+
+# ── Documentation ─────────────────────────────────────────────────────────────
+/docs/                          @AT-Medical-GmbH/platform-core
+/CONTRIBUTING.md                @AT-Medical-GmbH/platform-core
+/CODE_OF_CONDUCT.md             @AT-Medical-GmbH/admin-team
+/CHANGELOG.md                   @AT-Medical-GmbH/platform-core

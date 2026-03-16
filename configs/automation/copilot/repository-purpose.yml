@@ -1,0 +1,88 @@
+# ============================================================
+# AT Medical – Copilot / Automation Repository Purpose
+# Repository: DIG-cognicore
+# ============================================================
+
+repository:
+  name: DIG-cognicore
+  type: project
+  visibility: private
+
+purpose:
+  summary: >
+    CogniCore™ is an enterprise-grade, web-based interactive presentation
+    and learning platform by AT Medical GmbH®. It provides real-time audience
+    interaction (polls, Q&A, reactions), live captioning and multi-language
+    translation, session recording, transcript management, LMS integration
+    (LTI 1.3 / Moodle), and offline/local-WLAN operation. The repository
+    is a TypeScript/Node.js monorepo (Turborepo + pnpm) consisting of
+    Next.js frontend applications and NestJS backend microservices.
+
+  primary_goal: >
+    Deliver a production-ready, modular, accessible communication platform
+    for medical education, universities, schools, conferences, and hybrid events.
+
+  out_of_scope:
+    - Direct patient care or clinical decision support
+    - Electronic health record (EHR) integration
+    - HIPAA-covered data processing (unless explicitly scoped)
+
+modules:
+  - name: CogniCompanion™
+    role: Participant-facing web app (viewer, remote controller)
+  - name: CogniCoordinator™
+    role: Administration, event planning, and session management
+  - name: CogniConnect™
+    role: Real-time interaction (polls, Q&A, audience signals, reactions)
+  - name: CogniCaption™
+    role: Live subtitles and multi-language translation per participant
+  - name: CogniCoach™
+    role: Didactic support tools (session reset, pace control, guided flows)
+  - name: CogniCustom™
+    role: Per-participant customization (font size, contrast, language, layout)
+  - name: CogniCreator™
+    role: Layout engine, branding configuration, and theme management
+  - name: "CogniCell LocalLink™"
+    role: Local WLAN / offline operation mode for isolated environments
+  - name: CogniCapture™
+    role: Session recording (official and personal recording pipelines)
+  - name: CogniChronicle™
+    role: Transcript and archive management (export to TXT, VTT, JSON)
+  - name: CogniControl™
+    role: Permissions, policies, role-based access, and compliance controls
+
+automation:
+  copilot_allowed: true
+  preferred_languages:
+    - TypeScript
+    - JavaScript
+  coding_conventions:
+    - Conventional Commits
+    - ESLint + Prettier enforced
+    - TypeScript strict mode
+    - pnpm workspaces
+    - Turborepo pipeline
+  test_patterns:
+    - "**/*.spec.ts"
+    - "**/*.test.ts"
+    - "tests/**"
+  branch_strategy:
+    default_branch: main
+    feature_prefix: "feat/"
+    fix_prefix: "fix/"
+    release_prefix: "release/"
+
+governance:
+  primary_team: "@AT-Medical/admin-team"
+  secondary_teams:
+    - "@AT-Medical/devops-team"
+  review_required: true
+  min_approvals: 1
+
+# ============================================================
+# Version block
+# ============================================================
+_meta:
+  schema_version: "1.0"
+  last_updated: "2026-03-16"
+  maintained_by: "@AT-Medical/admin-team"

@@ -1,0 +1,112 @@
+# ============================================================
+# AT Medical – Repository Profile
+# Repository: DIG-cognicore
+# ============================================================
+
+repository:
+  name: DIG-cognicore
+  display_name: "CogniCore™"
+  type: project
+  visibility: private
+  status: active
+
+  description: >
+    CogniCore™ is a modular, web-based platform for interactive, integrative,
+    and inclusive learning and communication environments. Designed for schools,
+    universities, medical education, conferences, hybrid events, and live
+    presentations with real-time interaction. It provides real-time polls, Q&A,
+    live captions, translation, session recording, LMS integration (LTI 1.3),
+    and offline/local-WLAN support via CogniCell LocalLink™.
+
+  product_name: "CogniCore™"
+  product_tagline: "Interactive. Integrative. Inclusive."
+
+  customer_facing: true
+
+organization:
+  name: AT Medical GmbH®
+  github_org: AT-Medical
+  contact: dev@atmedical.de
+
+ownership:
+  primary_team: "@AT-Medical/admin-team"
+  secondary_teams:
+    - "@AT-Medical/devops-team"
+  codeowners_file: .github/CODEOWNERS
+
+classification:
+  domain: medical-education
+  category: platform
+  tags:
+    - cognicore
+    - interactive-learning
+    - real-time
+    - lms
+    - webrtc
+    - captions
+    - translation
+    - typescript
+    - nextjs
+    - nestjs
+    - monorepo
+
+deploy:
+  targets:
+    - vps
+    - webspace
+  container: docker
+  ci_cd: github-actions
+  storage: s3-compatible  # future: R2 integration
+  prepare_for_r2_import: true
+
+tech_stack:
+  frontend:
+    - Next.js (App Router)
+    - React
+    - TypeScript
+    - Tailwind CSS
+  backend:
+    - NestJS
+    - TypeScript
+    - REST + WebSocket
+  realtime:
+    - Socket.io
+    - Redis Pub/Sub
+  database:
+    - PostgreSQL
+    - Prisma ORM
+  speech_and_translation:
+    - Azure Cognitive Services
+    - Deepgram
+    - OpenAI Whisper
+    - DeepL
+    - Azure Translator
+  recording:
+    - WebRTC
+    - FFmpeg
+    - S3-compatible storage
+  auth:
+    - JWT
+    - OAuth 2.0 / OIDC
+    - LTI 1.3
+  monorepo:
+    - Turborepo
+    - pnpm workspaces
+  containerization:
+    - Docker
+    - docker-compose
+
+compliance:
+  security_policy: SECURITY.md
+  code_of_conduct: CODE_OF_CONDUCT.md
+  contributing_guide: CONTRIBUTING.md
+  changelog: CHANGELOG.md
+  license: MIT
+
+# ============================================================
+# Version block
+# ============================================================
+_meta:
+  schema_version: "1.0"
+  last_updated: "2026-03-16"
+  maintained_by: "@AT-Medical/admin-team"
