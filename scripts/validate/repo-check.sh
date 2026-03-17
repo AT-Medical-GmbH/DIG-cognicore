@@ -3,7 +3,7 @@
 # CogniCore™ – Repository Self-Check Script
 # AT Medical Enterprise Standard v1.0
 # ==============================================================
-# Usage:  bash scripts/validate/repo-check.sh [--fix]
+# Usage:  bash scripts/validate/repo-check.sh
 # Exit 0 = All checks passed
 # Exit 1 = One or more checks failed
 # ==============================================================
@@ -13,11 +13,6 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 ERRORS=0
 WARNINGS=0
-FIX_MODE=false
-
-if [[ "${1:-}" == "--fix" ]]; then
-  FIX_MODE=true
-fi
 
 # ── Colour helpers ─────────────────────────────────────────────
 RED='\033[0;31m'
