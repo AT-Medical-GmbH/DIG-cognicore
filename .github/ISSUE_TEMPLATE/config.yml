@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: AT Medical Support
+    url: https://atmedical.de/support
+    about: For product support and general questions, please contact AT Medical GmbH®.
+  - name: Security Vulnerability
+    url: https://github.com/AT-Medical/DIG-cognicore/security/advisories/new
+    about: Please report security vulnerabilities via GitHub Security Advisories — do NOT open a public issue.
