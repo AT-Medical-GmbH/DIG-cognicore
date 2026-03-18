@@ -1,0 +1,58 @@
+# ============================================================
+# AT Medical – Dependabot Configuration
+# CogniCore™ | DIG-cognicore
+# ============================================================
+
+version: 2
+
+updates:
+  # ── npm / pnpm (Node.js monorepo) ─────────────────────────
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 10
+    assignees:
+      - ATMedicalGmbH
+    labels:
+      - dependencies
+      - npm
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      typescript-ecosystem:
+        patterns:
+          - "typescript"
+          - "@typescript-eslint/*"
+          - "eslint*"
+          - "prettier"
+      turbo-and-build:
+        patterns:
+          - "turbo"
+          - "@turbo/*"
+      nextjs-and-react:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+          - "@types/react*"
+
+  # ── GitHub Actions ─────────────────────────────────────────
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "08:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 5
+    assignees:
+      - ATMedicalGmbH
+    labels:
+      - dependencies
+      - github-actions
+    commit-message:
+      prefix: "chore(ci)"
