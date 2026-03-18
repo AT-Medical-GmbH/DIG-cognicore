@@ -47,7 +47,7 @@ jobs:
         run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
       - name: Cache pnpm store
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -82,7 +82,7 @@ jobs:
         run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
       - name: Cache pnpm store
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -117,7 +117,7 @@ jobs:
         run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
       - name: Cache pnpm store
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -153,7 +153,7 @@ jobs:
         run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
       - name: Cache pnpm store
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
           key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
