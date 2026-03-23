@@ -26,7 +26,7 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "socket.io": "^4.7.5",
-    "redis": "^4.6.14",
+    "redis": "^5.11.0",
     "nanoid": "^5.0.7"
   },
   "devDependencies": {
