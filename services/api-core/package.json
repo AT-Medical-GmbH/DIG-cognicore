@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^10.3.9",
-    "@nestjs/core": "^11.1.17",
+    "@nestjs/core": "^11.1.18",
     "@nestjs/config": "^3.2.2",
     "@nestjs/platform-express": "^10.3.9",
     "@nestjs/swagger": "^11.2.6",
