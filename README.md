@@ -1,3 +1,5 @@
+> **Proprietary Notice:** This repository is source-available but not open source. All rights are reserved by AT Medical GmbH®.
+
 # CogniCore™
 
 **Interactive. Integrative. Inclusive.**
@@ -9,7 +11,7 @@
 [![Status](https://img.shields.io/badge/status-active-brightgreen?style=flat-square)](metadata/repository-profile.yml)
 [![Team](https://img.shields.io/badge/team-admin--team-blueviolet?style=flat-square)](https://github.com/orgs/AT-Medical/teams/admin-team)
 [![Deploy](https://img.shields.io/badge/deploy-VPS%20%7C%20Webspace-orange?style=flat-square)](metadata/repository-profile.yml)
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/license-Proprietary-red?style=flat-square)](LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/AT-Medical/DIG-cognicore/ci-validation.yml?label=CI&style=flat-square)](https://github.com/AT-Medical/DIG-cognicore/actions/workflows/ci-validation.yml)
 
 CogniCore™ is a modular, web-based platform for interactive, integrative, and inclusive learning and communication environments. Designed for schools, universities, medical education, conferences, hybrid events, and live presentations with real-time interaction.
