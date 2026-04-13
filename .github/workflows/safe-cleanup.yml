@@ -104,7 +104,7 @@ jobs:
     if: ${{ github.event_name == 'schedule' || github.event.inputs.delete_old_workflow_runs == 'true' }}
     steps:
       - name: Delete workflow runs older than 90 days
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
